@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>William Marques - Meus Links</title>
+    <link
+      rel="stylesheet"
+      href="https://bootswatch.com/5/litera/bootstrap.min.css"
+    />
+    <style>
+      body {
+        background-color: #f8f9fa;
+      }
+      .link-container {
+        max-width: 680px;
+        margin: 40px auto;
+      }
+      .profile-pic {
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+      }
+      .link-btn {
+        transition: transform 0.2s ease-in-out;
+      }
+      .link-btn:hover {
+        transform: scale(1.02);
+      }
+      .link-icon {
+        width: 24px;
+        height: 24px;
+        margin-right: 15px;
+      }
+    </style>
+  </head>
+  <body class="d-flex align-items-center py-4 bg-body-tertiary">
+    <div class="container text-center link-container">
+      <img
+        src="../static/img/will.jpg"
+        alt="Foto de Perfil"
+        class="img-thumbnail rounded-circle mb-3 profile-pic"
+      />
+      <h1 class="h3 mb-3 fw-normal">William Marques</h1>
+      <p class="text-muted mb-4">Bem-vindo(a) aos meus links!</p>
+
+      <div id="links-list" class="d-grid gap-3"></div>
+    </div>
+
+    <script>
+      const linksList = document.getElementById("links-list");
+      const apiUrl = "/api/links";
+
+      async function fetchLinks() {
+        try {
+          const response = await fetch(apiUrl);
+          const links = await response.json();
+          linksList.innerHTML = "";
+
+          links.forEach((link) => {
+            const anchor = document.createElement("a");
+            anchor.href = link.url;
+            anchor.className =
+              "btn btn-light btn-lg text-start d-flex align-items-center link-btn shadow-sm";
+            anchor.target = "_blank";
+
+            let iconHtml = "";
+            if (link.thumbnail_url) {
+              iconHtml = `<img src="${link.thumbnail_url}" alt="ícone" style="width: 24px; height: 24px; margin-right: 15px; border-radius: 4px;">`;
+            } else {
+              iconHtml = `<span style="width: 24px; height: 24px; margin-right: 15px;">&#128279;</span>`;
+            }
+
+            anchor.innerHTML = `${iconHtml} ${link.title}`;
+
+            anchor.addEventListener("click", async (event) => {
+              if (link.url.startsWith("mailto:")) {
+                event.preventDefault();
+              }
+
+              try {
+                await fetch(`/api/click/${link.id}`, {
+                  method: "POST",
+                });
+
+                if (!link.url.startsWith("mailto:")) {
+                } else {
+                  window.location.href = link.url;
+                }
+              } catch (error) {
+                console.error("Erro ao registrar o clique:", error);
+              }
+            });
+
+            linksList.appendChild(anchor);
+          });
+        } catch (error) {
+          console.error("Erro ao buscar os links:", error);
+          linksList.innerHTML =
+            '<p class="text-danger">Não foi possível carregar os links.</p>';
+        }
+      }
+
+      fetchLinks();
+    </script>
+  </body>
+</html>

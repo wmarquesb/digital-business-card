@@ -1,0 +1,15 @@
+# ambiente virutal
+venv/
+.venv/
+
+# arquivos de cache do python
+__pycache__/
+*.pyc
+
+# banco de dados local
+database.db
+*.sqlite3
+
+# arquivos de sistema operacional
+.DS_Store
+Thumbs.db
