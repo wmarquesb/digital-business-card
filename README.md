@@ -1,8 +1,6 @@
 # Cartão de Visitas Digital com Análise de Cliques
 
-![Captura de tela da página de links](https://prnt.sc/5mSqsWySBMHP)
-
-![Captura de tela da página admin](https://prnt.sc/o5Xw9c6Nfvz9)
+![Captura de tela da página de links](https://imgur.com/a/tnX6ElT)
 
 Uma aplicação web Full Stack, construída com Python e Flask, que permite criar uma página de links personalizada, similar ao Linktree. O projeto inclui um painel de administração para gerenciar os links e visualizar a popularidade de cada um através de um gráfico de cliques.
 
